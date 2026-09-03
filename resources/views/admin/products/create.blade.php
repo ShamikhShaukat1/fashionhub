@@ -118,7 +118,7 @@
             <div class="pt-4 border-t border-stone-800/80 flex items-center justify-end gap-4">
 
                 <a
-                    href="{{ route ('products.index') }}"
+                    href="{{ route ('admin.products.index') }}"
                     class="px-5 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 font-semibold text-xs uppercase tracking-wider transition">
                     Cancel
                 </a>
