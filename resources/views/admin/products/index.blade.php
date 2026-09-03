@@ -188,15 +188,17 @@
 
                     </td>
 
-                    <td class="p-4 text-right">
-                        <div class="inline-flex items-center gap-3">
+                    <td class="px-6 py-5">
+                        <div class="flex justify-end items-center gap-2">
                             <a
-                                href="{{ route('admin.products.edit', $product->id) }}" class="text-xs text-amber-400 hover:text-amber-300 transition hover:underline">
+                                href="{{ route('admin.products.edit', $product->id) }}"
+                               class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-semibold uppercase tracking-wider rounded-lg transition">
                                 Edit
                             </a>
 
                             <a
-                                href="{{ route('admin.products.delete', $product->id) }}" class="text-xs text-rose-400 hover:text-rose-300 transition hover:underline">
+                                href="{{ route('admin.products.delete', $product->id) }}"
+                                class="px-4 py-2 bg-red-500/10 hover:bg-red-500 border border-red-500/30 hover:border-red-500 text-red-400 hover:text-white text-xs font-semibold uppercase tracking-wider rounded-lg transition">
                                 Delete
                             </a>
                         </div>

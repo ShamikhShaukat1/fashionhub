@@ -43,84 +43,59 @@
                 <div class="sm:col-span-2">
                     <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2"> Product Name * </label>
                     <input
-                        type="text"
-                        name="name"
-                        value="{{ old('name') }}"
-                        required
-                        placeholder="e.g. Silk Midnight Gown"
+                        type="text" name="name" value="{{ old('name') }}" required placeholder="e.g. Silk Midnight Gown"
                         class="w-full px-4 py-3 bg-stone-950/60 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition placeholder:text-stone-600">
                 </div>
 
                 <div>
-                    <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2"> Category ID * </label>
-                    <input
-                        type="number"
-                        name="category_id"
-                        value="{{ old('category_id') }}"
-                        required
-                        placeholder="e.g. 1"
-                        class="w-full px-4 py-3 bg-stone-950/60 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition placeholder:text-stone-600">
+                    <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2"> Category * </label>
+                    <select
+                        name="category_id" required class="w-full px-4 py-3 bg-stone-950 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition cursor-pointer">
+                        <option value="" disabled {{ old('category_id') ? '' : 'selected' }} class="bg-stone-900 text-stone-500">
+                            Select category
+                        </option>
+
+                        @foreach($category as $id => $name)
+                            <option value="{{ $id }}" {{ old('category_id') == $id ? 'selected' : '' }} class="bg-stone-900 text-stone-200">
+                                {{ $name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div>
                     <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2"> Stock Units * </label>
-                    <input
-                        type="number"
-                        name="stock"
-                        value="{{ old('stock') }}"
-                        required
-                        placeholder="0"
+                    <input type="number" name="stock" value="{{ old('stock') }}" required placeholder="0"
                         class="w-full px-4 py-3 bg-stone-950/60 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition placeholder:text-stone-600">
                 </div>
 
                 <div>
                     <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2"> Regular Price ($) * </label>
-                    <input
-                        type="number"
-                        step="0.01"
-                        name="price"
-                        value="{{ old('price') }}"
-                        required
-                        placeholder="0.00"
+                    <input type="number" step="0.01" name="price" value="{{ old('price') }}" required placeholder="0.00"
                         class="w-full px-4 py-3 bg-stone-950/60 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition placeholder:text-stone-600">
                 </div>
 
                 <div>
                     <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2"> Sale Price ($) </label>
-                    <input
-                        type="number"
-                        step="0.01"
-                        name="sale_price"
-                        value="{{ old('sale_price') }}"
-                        placeholder="0.00"
+                    <input type="number" step="0.01" name="sale_price" value="{{ old('sale_price') }}" placeholder="0.00"
                         class="w-full px-4 py-3 bg-stone-950/60 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition placeholder:text-stone-600">
                 </div>
 
                 <div>
                     <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2"> Available Sizes </label>
-                    <input
-                        type="text"
-                        name="size"
-                        value="{{ old('size') }}"
-                        placeholder="S, M, L, XL"
+                    <input type="text" name="size" value="{{ old('size') }}" placeholder="S, M, L, XL"
                         class="w-full px-4 py-3 bg-stone-950/60 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition placeholder:text-stone-600">
                 </div>
 
                 <div>
                     <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2"> Color / Shade </label>
-                    <input
-                        type="text"
-                        name="color"
-                        value="{{ old('color') }}"
-                        placeholder="e.g. Midnight Black"
+                    <input type="text" name="color" value="{{ old('color') }}" placeholder="e.g. Midnight Black"
                         class="w-full px-4 py-3 bg-stone-950/60 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition placeholder:text-stone-600">
                 </div>
 
                 <div>
                     <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2"> Publishing Status </label>
-                    <select
-                        name="status"
-                        class="w-full px-4 py-3 bg-stone-950 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition">
+                    <select name="status" class="w-full px-4 py-3 bg-stone-950 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition">
                         <option value="1" {{ old('status', '1') == '1' ? 'selected' : '' }}>
                             Active
                         </option>
@@ -135,10 +110,7 @@
                     <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2">
                         Description
                     </label>
-                    <textarea
-                        name="description"
-                        rows="4"
-                        placeholder="Describe the material, fit, and craftsmanship..."
+                    <textarea name="description" rows="4" placeholder="Describe the material, fit, and craftsmanship..."
                         class="w-full px-4 py-3 bg-stone-950/60 border border-stone-800 rounded-xl text-stone-200 text-sm focus:outline-none focus:border-amber-400 transition placeholder:text-stone-600">{{ old('description') }}</textarea>
                 </div>
             </div>

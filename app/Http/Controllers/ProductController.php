@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,7 +29,8 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('admin.products.create');
+        $category = Category::pluck('name', 'id');
+        return view('admin.products.create', compact('category'));
     }
 
     public function store(Request $request)

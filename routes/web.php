@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 
 Route::middleware('guest')->group(function () {
@@ -28,28 +29,31 @@ Route::middleware('auth')->group(function () {
 });
 
 
+// Products
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
-
-    // Product list
     Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
-
-    // Create product page
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-
-    // Store product
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-
-    // Edit product page
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-
-    // Update product
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-
-    // Delete product
     Route::get('/products/{product}/delete', [ProductController::class, 'delete'])->name('products.delete');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+});
+
+// Category
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
+    Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::get('/categories/{category}/delete', [CategoryController::class, 'confirmDelete']) ->name('categories.delete');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
 });
