@@ -32,6 +32,12 @@
             'active_pattern' => 'admin.orders.*',
             'icon' => '🛒',
         ],
+        [
+            'name' => 'Vendors',
+            'route' => 'admin.vendors.index',
+            'active_pattern' => 'admin.vendors.*',
+            'icon' => '◆',
+        ],
     ];
 
     $userMenuItems = [
@@ -104,16 +110,6 @@
                     Management
                 </p>
             </div>
-
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-stone-500 hover:bg-stone-800 hover:text-white transition">
-                <span class="w-5 text-center">
-                    ◆
-                </span>
-                Vendors
-                <span class="ml-auto text-[9px] text-stone-600">
-                    Soon
-                </span>
-            </a>
 
             <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-stone-500 hover:bg-stone-800 hover:text-white transition">
                 <span class="w-5 text-center">

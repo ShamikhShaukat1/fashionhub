@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\VendorController;
 
 
 Route::middleware('guest')->group(function () {
@@ -85,4 +86,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
+    // Vendors
+    Route::get('/vendors', [VendorController::class, 'index'])->name('vendors.index');
+    Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
+    Route::post('/vendors', [VendorController::class, 'store'])->name('vendors.store');
+    Route::get('/vendors/{vendor}', [VendorController::class, 'show'])->name('vendors.show');
+    Route::get('/vendors/{vendor}/edit', [VendorController::class, 'edit'])->name('vendors.edit');
+    Route::put('/vendors/{vendor}', [VendorController::class, 'update'])->name('vendors.update');
+    Route::get('/vendors/{vendor}/delete', [VendorController::class, 'delete'])->name('vendors.delete');
+    Route::delete('/vendors/{vendor}', [VendorController::class, 'destroy'])->name('vendors.destroy');
+
 });
