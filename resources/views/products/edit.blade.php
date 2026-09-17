@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 @section('page', 'Products')
 @section('heading', 'Edit Product')
 @section('content')
@@ -21,11 +21,11 @@
 
     </div>
 
-    @if($errors->any())
+    @if ($errors->any())
         <div class="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm">
             <p class="font-semibold mb-2">Please correct the following errors:</p>
             <ul class="list-disc list-inside space-y-1 text-xs">
-                @foreach($errors->all() as $error)
+                @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
@@ -109,7 +109,7 @@
                     <label class="block text-xs uppercase tracking-wider font-semibold text-stone-400 mb-2">
                         Product Image
                     </label>
-                    @if($product->image)
+                    @if ($product->image)
                         <div class="flex items-center gap-3 mb-2">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="Current Image" class="w-10 h-10 object-cover rounded-lg border border-stone-800">
                             <span class="text-xs text-stone-500">Current Image</span>
@@ -142,4 +142,4 @@
         </form>
     </div>
 </div>
-@endsection
+@endsection --}}

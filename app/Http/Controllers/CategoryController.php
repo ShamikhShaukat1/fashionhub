@@ -37,11 +37,6 @@ class CategoryController extends Controller
             ->with('success', 'Category created successfully.');
     }
 
-    public function show(Category $category)
-    {
-        return view('admin.categories.show', compact('category'));
-    }
-
     public function edit(Category $category)
     {
         return view('admin.categories.edit', compact('category'));
