@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Vendor::class);
     }
+
+    public function latestOrder()
+    {
+        return $this->hasOne(Order::class)->latestOfMany();
+    }
 }

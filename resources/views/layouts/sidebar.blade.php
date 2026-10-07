@@ -38,6 +38,12 @@
             'active_pattern' => 'admin.vendors.*',
             'icon' => '◆',
         ],
+        [
+            'name' => 'Reports',
+            'route' => 'admin.reports.index',
+            'active_pattern' => 'admin.reports.*',
+            'icon' => '◫',
+        ],
     ];
 
     $userMenuItems = [
@@ -111,7 +117,8 @@
                 </p>
             </div>
 
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-stone-500 hover:bg-stone-800 hover:text-white transition">
+            <a href="#"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-stone-500 hover:bg-stone-800 hover:text-white transition">
                 <span class="w-5 text-center">
                     ▤
                 </span>
@@ -124,17 +131,8 @@
 
         <div class="border-t border-stone-800 my-4"></div>
 
-        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-stone-500 hover:bg-stone-800 hover:text-white transition">
-            <span class="w-5 text-center">
-                ◫
-            </span>
-            Reports
-            <span class="ml-auto text-[9px] text-stone-600">
-                Soon
-            </span>
-        </a>
-
-        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-stone-500 hover:bg-stone-800 hover:text-white transition">
+        <a href="#"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-stone-500 hover:bg-stone-800 hover:text-white transition">
             <span class="w-5 text-center">
                 ⚙
             </span>

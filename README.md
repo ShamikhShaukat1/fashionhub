@@ -299,3 +299,10 @@ The project can be further expanded with advanced e-commerce and business manage
 ## License
 
 This project is developed for educational and project development purposes.
+
+
+## PDF-Generation
+For the PDF-generation you install this package in your project 
+
+=======================     composer require barryvdh/laravel-dompdf   =========================================
+
