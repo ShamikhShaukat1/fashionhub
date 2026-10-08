@@ -13,7 +13,7 @@ class VendorController extends Controller
 {
     public function index()
     {
-        $vendors = Vendor::with('user')->latest()->paginate(10);
+        $vendors = Vendor::with('user')->latest()->paginate(5);
 
         return view('admin.vendors.index', compact('vendors'));
     }
@@ -88,7 +88,7 @@ class VendorController extends Controller
 
     public function show(Vendor $vendor)
     {
-        $vendor->load(['user','products.category']);
+        $vendor->load(['user', 'products.category']);
 
         return view('admin.vendors.show', compact('vendor'));
     }
@@ -179,7 +179,7 @@ class VendorController extends Controller
 
     public function delete(Vendor $vendor)
     {
-        $vendor->load(['user','products']);
+        $vendor->load(['user', 'products']);
 
         return view('admin.vendors.delete', compact('vendor'));
     }
@@ -187,7 +187,7 @@ class VendorController extends Controller
     public function destroy(Vendor $vendor)
     {
         if ($vendor->products()->exists()) {
-            return redirect()->route('admin.vendors.show', $vendor)->with('error','This vendor cannot be deleted because the vendor has products. Remove or reassign the products first.');
+            return redirect()->route('admin.vendors.show', $vendor)->with('error', 'This vendor cannot be deleted because the vendor has products. Remove or reassign the products first.');
         }
 
         if ($vendor->logo) {
@@ -208,14 +208,13 @@ class VendorController extends Controller
         return redirect()->route('admin.vendors.index')->with('success', 'Vendor deleted successfully.');
     }
 
-    private function generateUniqueSlug(string $storeName,?int $ignoreVendorId = null): string
+    private function generateUniqueSlug(string $storeName, ?int $ignoreVendorId = null): string
     {
         $slug = Str::slug($storeName);
         $originalSlug = $slug;
         $counter = 1;
 
-        while (Vendor::where('slug', $slug)->when($ignoreVendorId,fn ($query) => $query->where('id', '!=', $ignoreVendorId))->exists())
-        {
+        while (Vendor::where('slug', $slug)->when($ignoreVendorId, fn($query) => $query->where('id', '!=', $ignoreVendorId))->exists()) {
             $slug = $originalSlug . '-' . $counter;
             $counter++;
         }

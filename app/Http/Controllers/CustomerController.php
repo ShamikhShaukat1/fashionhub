@@ -10,9 +10,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = User::where('role', 'user')
-            ->latest()
-            ->paginate(10);
+        $customers = User::where('role', 'user')->latest()->paginate(5);
 
         return view('admin.customers.index', compact('customers'));
     }
@@ -36,25 +34,13 @@ class CustomerController extends Controller
         abort_if($customer->role !== 'user', 404);
 
         $validated = $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique('users', 'email')->ignore($customer->id),
-            ],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($customer->id),]
         ]);
 
         $customer->update($validated);
 
-        return redirect()
-            ->route('admin.customers.index')
-            ->with('success', 'Customer updated successfully.');
+        return redirect()->route('admin.customers.index')->with('success', 'Customer updated successfully.');
     }
 
     public function confirmDelete(User $customer)

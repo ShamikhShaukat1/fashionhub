@@ -45,6 +45,13 @@ class User extends Authenticatable
 
     public function latestOrder()
     {
-        return $this->hasOne(Order::class)->latestOfMany();
+        return $this->hasOne(Order::class)
+            ->latestOfMany()
+            ->select(['orders.id', 'orders.user_id', 'orders.created_at']);
+    }
+
+    public function inventoryTransactions(): HasMany
+    {
+        return $this->hasMany(InventoryTransaction::class);
     }
 }

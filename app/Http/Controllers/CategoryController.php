@@ -10,7 +10,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::withCount('products')->latest()->paginate(10);
+        $categories = Category::withCount('products')->latest()->paginate(5);
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -32,9 +32,7 @@ class CategoryController extends Controller
 
         Category::create($validated);
 
-        return redirect()
-            ->route('admin.categories.index')
-            ->with('success', 'Category created successfully.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
 
     public function edit(Category $category)
@@ -54,9 +52,7 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return redirect()
-            ->route('admin.categories.index')
-            ->with('success', 'Category updated successfully.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
 
     public function confirmDelete(Category $category)
@@ -71,8 +67,6 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()
-            ->route('admin.categories.index')
-            ->with('success', 'Category deleted successfully.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
     }
 }

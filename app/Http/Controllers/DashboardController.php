@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $products = Product::latest()->paginate(8);
+        $products = Product::latest()->paginate(5);
 
         return view('dashboard', compact('products'));
     }

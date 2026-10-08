@@ -11,6 +11,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Admin\InventoryController;
 
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
@@ -104,4 +105,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf');
+
+    // Inventory
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+    Route::get('/inventory/adjust', [InventoryController::class, 'create'])->name('inventory.create');
+    Route::post('/inventory/adjust', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::get('/inventory/{product}', [InventoryController::class, 'show'])->name('inventory.show');
 });

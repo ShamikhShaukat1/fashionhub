@@ -25,7 +25,6 @@ class OrderController extends Controller
                     ->orWhereHas('customer', function ($customerQuery) use ($search) {
 
                         $customerQuery->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%");
-
                     });
             });
         }
@@ -33,16 +32,16 @@ class OrderController extends Controller
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-        $orders = $query->paginate(10)->withQueryString();
+        $orders = $query->paginate(5)->withQueryString();
 
         return view('admin.orders.index', compact('orders'));
     }
 
     public function show(Order $order)
     {
-        $order->load(['customer','items.product',]);
+        $order->load(['customer', 'items.product',]);
 
-        return view('admin.orders.show',compact('order'));
+        return view('admin.orders.show', compact('order'));
     }
 
     public function updateStatus(Request $request, Order $order)
@@ -55,14 +54,14 @@ class OrderController extends Controller
             'status' => $validated['status'],
         ]);
 
-        return redirect()->route('admin.orders.show', $order)->with('success','Order status updated successfully.');
+        return redirect()->route('admin.orders.show', $order)->with('success', 'Order status updated successfully.');
     }
 
     public function destroy(Order $order)
     {
         $order->delete();
 
-        return redirect()->route('admin.orders.index')->with('success','Order deleted successfully.');
+        return redirect()->route('admin.orders.index')->with('success', 'Order deleted successfully.');
     }
 
     public function checkout()
@@ -70,7 +69,7 @@ class OrderController extends Controller
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
-            return redirect()->route('cart.index')->with('error','Your cart is empty.');
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
         $products = Product::whereIn('id', array_keys($cart))->get()->keyBy('id');
@@ -98,37 +97,37 @@ class OrderController extends Controller
         if (empty($cartItems)) {
             session()->forget('cart');
 
-            return redirect()->route('cart.index')->with('error','Your cart is no longer available.');
+            return redirect()->route('cart.index')->with('error', 'Your cart is no longer available.');
         }
 
         $shipping = 200;
         $total = $subtotal + $shipping;
 
-        return view('checkout.index',compact('cartItems','subtotal','shipping','total'));
+        return view('checkout.index', compact('cartItems', 'subtotal', 'shipping', 'total'));
     }
 
     public function placeOrder(Request $request)
     {
         $validated = $request->validate([
             'shipping_name' => ['required', 'string', 'max:255'],
-            'shipping_email' => ['required','email', 'max:255'],
-            'shipping_phone' => ['required', 'string','max:30'],
-            'shipping_address' => ['required','string','max:500'],
-            'shipping_city' => ['required','string','max:100'],
-            'shipping_postal_code' => ['nullable','string','max:20'],
-            'payment_method' => ['required','in:cash_on_delivery'],
-            'notes' => ['nullable','string','max:1000'],
+            'shipping_email' => ['required', 'email', 'max:255'],
+            'shipping_phone' => ['required', 'string', 'max:30'],
+            'shipping_address' => ['required', 'string', 'max:500'],
+            'shipping_city' => ['required', 'string', 'max:100'],
+            'shipping_postal_code' => ['nullable', 'string', 'max:20'],
+            'payment_method' => ['required', 'in:cash_on_delivery'],
+            'notes' => ['nullable', 'string', 'max:1000'],
         ]);
 
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
-            return redirect()->route('cart.index')->with('error','Your cart is empty.');
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
         try {
 
-            $order = DB::transaction(function () use ($cart,$validated,$request) {
+            $order = DB::transaction(function () use ($cart, $validated, $request) {
                 $subtotal = 0;
                 $orderItems = [];
 
@@ -196,40 +195,39 @@ class OrderController extends Controller
                         'subtotal' => $item['subtotal'],
                     ]);
 
-                    $product->decrement('stock',$item['quantity']);
+                    $product->decrement('stock', $item['quantity']);
                 }
 
                 return $order;
             });
-
         } catch (\Exception $e) {
-            return back()->withInput()->with('error',$e->getMessage());
+            return back()->withInput()->with('error', $e->getMessage());
         }
         session()->forget('cart');
 
-        return redirect()->route('orders.confirmation',$order)->with('success','Your order has been placed successfully.');
+        return redirect()->route('orders.confirmation', $order)->with('success', 'Your order has been placed successfully.');
     }
 
     public function confirmation(Order $order)
     {
-        abort_unless($order->user_id === Auth::id(),403);
+        abort_unless($order->user_id === Auth::id(), 403);
         $order->load(['items.product']);
 
-        return view('orders.confirmation',compact('order'));
+        return view('orders.confirmation', compact('order'));
     }
 
     public function customerOrders()
     {
-        $orders = Order::where('user_id',Auth::id())->latest()->paginate(10);
+        $orders = Order::where('user_id', Auth::id())->latest()->paginate(5);
 
-        return view('orders.index',compact('orders'));
+        return view('orders.index', compact('orders'));
     }
 
     public function customerShow(Order $order)
     {
-        abort_unless($order->user_id === Auth::id(),403);
+        abort_unless($order->user_id === Auth::id(), 403);
         $order->load(['items.product']);
 
-        return view('orders.show',compact('order'));
+        return view('orders.show', compact('order'));
     }
 }

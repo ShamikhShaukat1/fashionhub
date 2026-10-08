@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::latest()->paginate(10);
+        $products = Product::latest()->paginate(5);
 
         return view('products.index', compact('products'));
     }
@@ -22,7 +22,7 @@ class ProductController extends Controller
 
     public function adminIndex()
     {
-        $products = Product::latest()->paginate(10);
+        $products = Product::latest()->paginate(5);
 
         return view('admin.products.index', compact('products'));
     }
@@ -37,47 +37,46 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'category_id' => ['required','integer'],
-            'description' => ['nullable','string'],
-            'price' => ['required','numeric','min:0'],
-            'sale_price' => ['nullable','numeric','min:0'],
-            'stock' => ['required','integer','min:0'],
-            'size' => ['nullable','string','max:100'],
-            'color' => ['nullable','string','max:100'],
-            'image' => ['nullable','image','mimes:jpg,jpeg,png,webp','max:2048'],
-            'status' => ['required','boolean'],
+            'category_id' => ['required', 'integer'],
+            'description' => ['nullable', 'string'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'sale_price' => ['nullable', 'numeric', 'min:0'],
+            'stock' => ['required', 'integer', 'min:0'],
+            'size' => ['nullable', 'string', 'max:100'],
+            'color' => ['nullable', 'string', 'max:100'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'status' => ['required', 'boolean'],
         ]);
 
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
-
         }
 
         Product::create($validated);
 
-        return redirect()->route('admin.products.index')->with('success','Product created successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
     public function edit(Product $product)
     {
-        return view('admin.products.edit',compact('product'));
+        return view('admin.products.edit', compact('product'));
     }
 
-    public function update(Request $request,Product $product)
+    public function update(Request $request, Product $product)
     {
 
         $validated = $request->validate([
-            'name' => ['required','string','max:255'],
-            'category_id' => ['required','integer'],
-            'description' => ['nullable','string'],
-            'price' => ['required','numeric','min:0'],
-            'sale_price' => ['nullable','numeric','min:0'],
-            'stock' => ['required','integer','min:0'],
-            'size' => ['nullable','string','max:100'],
-            'color' => ['nullable','string','max:100'],
-            'image' => ['nullable','image','mimes:jpg,jpeg,png,webp','max:2048'],
-            'status' => ['required','boolean'],
+            'name' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'integer'],
+            'description' => ['nullable', 'string'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'sale_price' => ['nullable', 'numeric', 'min:0'],
+            'stock' => ['required', 'integer', 'min:0'],
+            'size' => ['nullable', 'string', 'max:100'],
+            'color' => ['nullable', 'string', 'max:100'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'status' => ['required', 'boolean'],
         ]);
 
 
@@ -95,7 +94,7 @@ class ProductController extends Controller
         }
 
         $product->update($validated);
-        return redirect()->route('admin.products.index')->with('success','Product updated successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
     public function delete(Product $product)
     {
@@ -113,6 +112,6 @@ class ProductController extends Controller
         }
 
         $product->delete();
-        return redirect()->route('admin.products.index')->with('success','Product deleted successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
     }
 }
