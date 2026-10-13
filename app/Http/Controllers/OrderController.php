@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\GenericNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -54,12 +56,32 @@ class OrderController extends Controller
             'status' => $validated['status'],
         ]);
 
+        if ($order->customer) {
+            $order->customer->notify(new GenericNotification(
+                title: 'Order Status Updated',
+                message: "Your order #{$order->order_number} status has been updated to: " . ucfirst($order->status),
+                type: 'info',
+                url: route('orders.show', $order->id)
+            ));
+        }
+
         return redirect()->route('admin.orders.show', $order)->with('success', 'Order status updated successfully.');
     }
 
     public function destroy(Order $order)
     {
+        $orderNumber = $order->order_number;
         $order->delete();
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'Order Deleted',
+                message: "Order #{$orderNumber} has been removed from the records.",
+                type: 'error',
+                url: route('admin.orders.index')
+            ));
+        }
 
         return redirect()->route('admin.orders.index')->with('success', 'Order deleted successfully.');
     }
@@ -196,6 +218,18 @@ class OrderController extends Controller
                     ]);
 
                     $product->decrement('stock', $item['quantity']);
+
+                    if ($product->fresh()->stock < 5) {
+                        $admins = User::where('role', 'admin')->get();
+                        foreach ($admins as $admin) {
+                            $admin->notify(new GenericNotification(
+                                title: 'Low Stock Warning',
+                                message: "Product \"{$product->name}\" is running low after order #{$order->order_number} ({$product->stock} left).",
+                                type: 'warning',
+                                url: route('admin.products.index')
+                            ));
+                        }
+                    }
                 }
 
                 return $order;
@@ -203,7 +237,27 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return back()->withInput()->with('error', $e->getMessage());
         }
+
         session()->forget('cart');
+
+        if ($request->user()) {
+            $request->user()->notify(new GenericNotification(
+                title: 'Order Placed Successfully',
+                message: "Your order #{$order->order_number} has been placed successfully.",
+                type: 'success',
+                url: route('orders.show', $order->id)
+            ));
+        }
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'New Order Received',
+                message: "Order #{$order->order_number} has been placed by " . ($request->user()->name ?? 'Guest') . ".",
+                type: 'info',
+                url: route('admin.orders.show', $order->id)
+            ));
+        }
 
         return redirect()->route('orders.confirmation', $order)->with('success', 'Your order has been placed successfully.');
     }

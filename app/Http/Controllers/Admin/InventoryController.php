@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\InventoryTransaction;
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\GenericNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
 
 class InventoryController extends Controller
 {
@@ -53,16 +54,19 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'product_id' => ['required', 'exists:products,id',],
-            'type' => ['required', 'in:stock_in,stock_out,adjustment',],
-            'quantity' => ['required', 'integer', 'min:0',],
-            'reason' => ['nullable', 'string', 'max:255',],
-            'notes' => ['nullable', 'string',],
+            'product_id' => ['required', 'exists:products,id'],
+            'type' => ['required', 'in:stock_in,stock_out,adjustment'],
+            'quantity' => ['required', 'integer', 'min:0'],
+            'reason' => ['nullable', 'string', 'max:255'],
+            'notes' => ['nullable', 'string'],
         ]);
 
-        DB::transaction(function () use ($validated) {
+        $productName = '';
+
+        DB::transaction(function () use ($validated, &$productName) {
 
             $product = Product::lockForUpdate()->findOrFail($validated['product_id']);
+            $productName = $product->name;
             $stockBefore = (int) $product->stock;
 
             if ($validated['type'] === 'stock_in') {
@@ -94,7 +98,35 @@ class InventoryController extends Controller
                 'reason' => $validated['reason'] ?? null,
                 'notes' => $validated['notes'] ?? null,
             ]);
+
+            $admins = User::where('role', 'admin')->get();
+            foreach ($admins as $admin) {
+                if ($stockAfter === 0) {
+                    $admin->notify(new GenericNotification(
+                        title: 'Out of Stock Alert',
+                        message: "Product \"{$product->name}\" is now completely out of stock!",
+                        type: 'error',
+                        url: route('admin.inventory.show', $product->id)
+                    ));
+                } elseif ($stockAfter <= 5) {
+                    $admin->notify(new GenericNotification(
+                        title: 'Low Stock Warning',
+                        message: "Product \"{$product->name}\" has low inventory ({$stockAfter} left).",
+                        type: 'warning',
+                        url: route('admin.inventory.show', $product->id)
+                    ));
+                }
+            }
         });
+
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            Auth::user()->notify(new GenericNotification(
+                title: 'Inventory Adjusted',
+                message: "Stock levels for \"{$productName}\" were successfully updated.",
+                type: 'success',
+                url: route('admin.inventory.index')
+            ));
+        }
 
         return redirect()->route('admin.inventory.index')->with('success', 'Inventory updated successfully.');
     }

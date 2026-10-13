@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\GenericNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +27,6 @@ class AuthController extends Controller
             $request->boolean('remember')
         )) {
 
-            // Prevent session fixation
             $request->session()->regenerate();
 
             if (Auth::user()->role === 'admin') {
@@ -58,14 +58,31 @@ class AuthController extends Controller
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => 'user',
         ]);
 
-        return redirect()->route('login') ->with('status', 'Account created successfully! Please sign in.');
+        $user->notify(new GenericNotification(
+            title: 'Welcome to Fashion Hub!',
+            message: 'We are thrilled to have you onboard. Explore our latest fashion collections now.',
+            type: 'success',
+            url: route('products.index')
+        ));
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'New Customer Registered',
+                message: $user->name . ' (' . $user->email . ') just created an account.',
+                type: 'info',
+                url: route('admin.customers.index')
+            ));
+        }
+
+        return redirect()->route('login')->with('status', 'Account created successfully! Please sign in.');
     }
 
     public function logout(Request $request)

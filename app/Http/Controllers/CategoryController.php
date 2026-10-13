@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\User;
+use App\Notifications\GenericNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -30,7 +32,17 @@ class CategoryController extends Controller
 
         $validated['slug'] = Str::slug($validated['name']);
 
-        Category::create($validated);
+        $category = Category::create($validated);
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'Category Created',
+                message: 'Category "' . $category->name . '" has been created successfully.',
+                type: 'success',
+                url: route('admin.categories.index')
+            ));
+        }
 
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
@@ -52,6 +64,16 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'Category Updated',
+                message: 'Category "' . $category->name . '" has been updated.',
+                type: 'info',
+                url: route('admin.categories.index')
+            ));
+        }
+
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
 
@@ -62,10 +84,21 @@ class CategoryController extends Controller
         return view('admin.categories.delete', compact('category'));
     }
 
-
     public function destroy(Category $category)
     {
+        $categoryName = $category->name;
+
         $category->delete();
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'Category Deleted',
+                message: 'Category "' . $categoryName . '" has been deleted.',
+                type: 'error',
+                url: route('admin.categories.index')
+            ));
+        }
 
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
     }

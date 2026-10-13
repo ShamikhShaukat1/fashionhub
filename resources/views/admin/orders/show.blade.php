@@ -3,25 +3,28 @@
     @php
 
         $statusClass = match ($order->status) {
-            'pending'    => 'bg-yellow-400/10 text-yellow-400',
-            'confirmed'  => 'bg-blue-400/10 text-blue-400',
+            'pending' => 'bg-yellow-400/10 text-yellow-400',
+            'confirmed' => 'bg-blue-400/10 text-blue-400',
             'processing' => 'bg-purple-400/10 text-purple-400',
-            'shipped'    => 'bg-indigo-400/10 text-indigo-400',
-            'delivered'  => 'bg-emerald-400/10 text-emerald-400',
-            'cancelled'  => 'bg-red-400/10 text-red-400',
-            default      => 'bg-stone-800 text-stone-400',
+            'shipped' => 'bg-indigo-400/10 text-indigo-400',
+            'delivered' => 'bg-emerald-400/10 text-emerald-400',
+            'cancelled' => 'bg-red-400/10 text-red-400',
+            default => 'bg-stone-800 text-stone-400',
         };
 
         $paymentClass = match ($order->payment_status) {
-            'paid'     => 'text-emerald-400',
-            'failed'   => 'text-red-400',
+            'paid' => 'text-emerald-400',
+            'failed' => 'text-red-400',
             'refunded' => 'text-purple-400',
-            default    => 'text-yellow-400',
+            default => 'text-yellow-400',
         };
 
         $paymentMethod = match ($order->payment_method) {
             'cash_on_delivery' => 'Cash on Delivery',
-            default            => $order->payment_method ? ucwords(str_replace('_', ' ', $order->payment_method)) : 'Not specified'};
+            default => $order->payment_method
+                ? ucwords(str_replace('_', ' ', $order->payment_method))
+                : 'Not specified',
+        };
 
     @endphp
 
@@ -51,30 +54,7 @@
                 </div>
             </div>
 
-            @if (session('success'))
-                <div
-                    class="mb-6 px-5 py-4 rounded-xl bg-emerald-400/10 border border-emerald-400/20 text-emerald-400">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="mb-6 px-5 py-4 rounded-xl bg-red-400/10 border border-red-400/20 text-red-400">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            @if ($errors->any())
-                <div class="mb-6 px-5 py-4 rounded-xl bg-red-400/10 border border-red-400/20 text-red-400">
-                    <ul class="list-disc list-inside text-sm space-y-1">
-                        @foreach ($errors->all() as $error)
-                            <li>
-                                {{ $error }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            @include('components.alerts')
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
                 <div class="xl:col-span-2 space-y-6">
@@ -94,9 +74,11 @@
                                 <div class="px-6 py-5 flex items-center gap-5 hover:bg-stone-800/20 transition">
                                     <div class="w-20 h-20 rounded-xl bg-stone-800 overflow-hidden flex-shrink-0">
                                         @if ($item->product && $item->product->image)
-                                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product_name }}" class="w-full h-full object-cover">
+                                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                                alt="{{ $item->product_name }}" class="w-full h-full object-cover">
                                         @else
-                                            <div class="w-full h-full flex items-center justify-center text-stone-600 text-2xl">
+                                            <div
+                                                class="w-full h-full flex items-center justify-center text-stone-600 text-2xl">
                                                 📦
                                             </div>
                                         @endif
@@ -267,7 +249,8 @@
                         </h2>
 
                         <div class="flex items-center gap-4 mb-5">
-                            <div class="w-12 h-12 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center font-bold flex-shrink-0">
+                            <div
+                                class="w-12 h-12 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center font-bold flex-shrink-0">
                                 {{ strtoupper(substr($order->shipping_name, 0, 1)) }}
                             </div>
 
@@ -283,7 +266,8 @@
                         </div>
 
                         @if ($order->customer)
-                            <a href="{{ route('admin.customers.show', $order->customer) }}" class="block w-full text-center px-4 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white text-sm font-semibold transition">
+                            <a href="{{ route('admin.customers.show', $order->customer) }}"
+                                class="block w-full text-center px-4 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white text-sm font-semibold transition">
                                 View Customer
                             </a>
                         @endif
@@ -298,12 +282,12 @@
                             @csrf
                             @method('PATCH')
 
-                            <label
-                                class="block text-xs uppercase tracking-wider text-stone-500 mb-2">
+                            <label class="block text-xs uppercase tracking-wider text-stone-500 mb-2">
                                 Order Status
                             </label>
 
-                            <select name="status" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-0 mb-4">
+                            <select name="status"
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-0 mb-4">
                                 @foreach (['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'] as $status)
                                     <option value="{{ $status }}" @selected($order->status === $status)>
                                         {{ ucfirst($status) }}
@@ -311,7 +295,8 @@
                                 @endforeach
                             </select>
 
-                            <button type="submit" class="w-full px-4 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-semibold text-sm transition">
+                            <button type="submit"
+                                class="w-full px-4 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-semibold text-sm transition">
                                 Update Status
                             </button>
                         </form>
@@ -338,8 +323,7 @@
                                     Status
                                 </span>
 
-                                <span
-                                    class="text-sm font-semibold {{ $paymentClass }}">
+                                <span class="text-sm font-semibold {{ $paymentClass }}">
                                     {{ ucfirst($order->payment_status) }}
                                 </span>
                             </div>
@@ -377,8 +361,7 @@
                                     Placed
                                 </span>
 
-                                <span
-                                    class="text-sm text-stone-300 text-right">
+                                <span class="text-sm text-stone-300 text-right">
                                     {{ $order->created_at->format('d M Y') }}
                                 </span>
                             </div>
@@ -390,16 +373,17 @@
                             Danger Zone
                         </h2>
 
-                        <p
-                            class="text-xs text-stone-500 mt-2 mb-5">
+                        <p class="text-xs text-stone-500 mt-2 mb-5">
                             Permanently delete this order and all its items.
                         </p>
 
-                        <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this order? This action cannot be undone.');">
+                        <form action="{{ route('admin.orders.destroy', $order) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to permanently delete this order? This action cannot be undone.');">
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit" class="w-full px-4 py-3 rounded-xl bg-red-500 hover:bg-red-400 text-white font-semibold text-sm transition">
+                            <button type="submit"
+                                class="w-full px-4 py-3 rounded-xl bg-red-500 hover:bg-red-400 text-white font-semibold text-sm transition">
                                 Delete Order
                             </button>
                         </form>
@@ -408,5 +392,4 @@
             </div>
         </div>
     </div>
-
 @endsection

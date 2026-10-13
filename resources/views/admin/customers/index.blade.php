@@ -24,11 +24,7 @@
             </div>
         </div>
 
-        @if (session('success'))
-            <div class="mb-6 px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
-                {{ session('success') }}
-            </div>
-        @endif
+        @include('components.alerts')
 
         <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
             <div class="overflow-x-auto">
@@ -85,11 +81,13 @@
 
                                 <td class="px-6 py-5">
                                     <div class="flex justify-end items-center gap-2">
-                                        <a href="{{ route('admin.customers.show', $customer) }}" class="px-3 py-2 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-semibold">
+                                        <a href="{{ route('admin.customers.show', $customer) }}"
+                                            class="px-3 py-2 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-semibold">
                                             View
                                         </a>
 
-                                        <a href="{{ route('admin.customers.edit', $customer) }}" class="px-3 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-semibold">
+                                        <a href="{{ route('admin.customers.edit', $customer) }}"
+                                            class="px-3 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-semibold">
                                             Edit
                                         </a>
 

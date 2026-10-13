@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\User;
+use App\Notifications\GenericNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,6 +17,7 @@ class ProductController extends Controller
 
         return view('products.index', compact('products'));
     }
+
     public function show(Product $product)
     {
         return view('products.show', compact('product'));
@@ -48,12 +51,32 @@ class ProductController extends Controller
             'status' => ['required', 'boolean'],
         ]);
 
-
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
 
-        Product::create($validated);
+        $product = Product::create($validated);
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'New Product Created',
+                message: 'Product "' . $product->name . '" has been added successfully.',
+                type: 'success',
+                url: route('admin.products.index')
+            ));
+        }
+
+        if ($product->stock < 5) {
+            foreach ($admins as $admin) {
+                $admin->notify(new GenericNotification(
+                    title: 'Low Stock Warning',
+                    message: 'Product "' . $product->name . '" has low inventory (' . $product->stock . ' left).',
+                    type: 'warning',
+                    url: route('admin.products.index')
+                ));
+            }
+        }
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
@@ -65,7 +88,6 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'category_id' => ['required', 'integer'],
@@ -79,9 +101,7 @@ class ProductController extends Controller
             'status' => ['required', 'boolean'],
         ]);
 
-
         if ($request->hasFile('image')) {
-
             if (
                 $product->image &&
                 Storage::disk('public')->exists($product->image)
@@ -89,13 +109,35 @@ class ProductController extends Controller
                 Storage::disk('public')->delete($product->image);
             }
 
-
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
 
         $product->update($validated);
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'Product Updated',
+                message: 'Product "' . $product->name . '" has been updated.',
+                type: 'info',
+                url: route('admin.products.index')
+            ));
+        }
+
+        if ($product->stock < 5) {
+            foreach ($admins as $admin) {
+                $admin->notify(new GenericNotification(
+                    title: 'Low Stock Warning',
+                    message: 'Product "' . $product->name . '" stock is now low (' . $product->stock . ' left).',
+                    type: 'warning',
+                    url: route('admin.products.index')
+                ));
+            }
+        }
+
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
+
     public function delete(Product $product)
     {
         return view('admin.products.delete', compact('product'));
@@ -103,6 +145,7 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        $productName = $product->name;
 
         if (
             $product->image &&
@@ -112,6 +155,17 @@ class ProductController extends Controller
         }
 
         $product->delete();
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'Product Deleted',
+                message: 'Product "' . $productName . '" has been deleted from the catalog.',
+                type: 'error',
+                url: route('admin.products.index')
+            ));
+        }
+
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
     }
 }

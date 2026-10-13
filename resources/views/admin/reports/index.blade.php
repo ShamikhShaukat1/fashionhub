@@ -17,6 +17,8 @@
             </div>
         </div>
 
+        @include('components.alerts')
+
         <div class="bg-stone-900/60 border border-stone-800/80 rounded-2xl p-5 mb-8">
             <form method="GET" action="{{ route('admin.reports.index') }}">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">

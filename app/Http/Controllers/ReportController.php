@@ -7,16 +7,18 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Notifications\GenericNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
     public function index(Request $request)
     {
         $data = $this->getReportData($request);
+
         return view('admin.reports.index', $data);
     }
 
@@ -24,6 +26,15 @@ class ReportController extends Controller
     {
         $data = $this->getReportData($request);
         $pdf = Pdf::loadView('admin.reports.pdf', $data)->setPaper('a4', 'portrait');
+
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            Auth::user()->notify(new GenericNotification(
+                title: 'PDF Report Exported',
+                message: 'You successfully exported the system sales and performance report as a PDF.',
+                type: 'success',
+                url: route('admin.reports.index')
+            ));
+        }
 
         return $pdf->download('fashion-hub-report-' . now()->format('Y-m-d') . '.pdf');
     }

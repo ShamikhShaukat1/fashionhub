@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Vendor;
+use App\Notifications\GenericNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -17,6 +18,7 @@ class VendorController extends Controller
 
         return view('admin.vendors.index', compact('vendors'));
     }
+
     public function create()
     {
         return view('admin.vendors.create');
@@ -38,15 +40,7 @@ class VendorController extends Controller
             'state' => 'nullable|string|max:100',
             'country' => 'nullable|string|max:100',
             'postal_code' => 'nullable|string|max:20',
-            'status' => [
-                'required',
-                Rule::in([
-                    'pending',
-                    'active',
-                    'suspended',
-                    'rejected',
-                ]),
-            ],
+            'status' => ['required', Rule::in(['pending', 'active', 'suspended', 'rejected'])],
         ]);
 
         $user = User::create([
@@ -67,7 +61,7 @@ class VendorController extends Controller
             $banner = $request->file('banner')->store('vendors/banners', 'public');
         }
 
-        Vendor::create([
+        $vendor = Vendor::create([
             'user_id' => $user->id,
             'store_name' => $validated['store_name'],
             'slug' => $this->generateUniqueSlug($validated['store_name']),
@@ -82,6 +76,23 @@ class VendorController extends Controller
             'postal_code' => $validated['postal_code'] ?? null,
             'status' => $validated['status'],
         ]);
+
+        $user->notify(new GenericNotification(
+            title: 'Welcome to Fashion Hub Vendor Portal',
+            message: 'Your vendor profile for "' . $vendor->store_name . '" has been created. Status: ' . ucfirst($vendor->status),
+            type: 'success',
+            url: route('dashboard')
+        ));
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'New Vendor Registered',
+                message: 'Vendor store "' . $vendor->store_name . '" was created by ' . $user->name . '.',
+                type: 'info',
+                url: route('admin.vendors.show', $vendor->id)
+            ));
+        }
 
         return redirect()->route('admin.vendors.index')->with('success', 'Vendor created successfully.');
     }
@@ -104,13 +115,7 @@ class VendorController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique('users', 'email')->ignore($vendor->user_id),
-            ],
-
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($vendor->user_id)],
             'password' => 'nullable|string|min:8|confirmed',
             'store_name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -122,16 +127,7 @@ class VendorController extends Controller
             'state' => 'nullable|string|max:100',
             'country' => 'nullable|string|max:100',
             'postal_code' => 'nullable|string|max:20',
-
-            'status' => [
-                'required',
-                Rule::in([
-                    'pending',
-                    'active',
-                    'suspended',
-                    'rejected',
-                ]),
-            ],
+            'status' => ['required', Rule::in(['pending', 'active', 'suspended', 'rejected'])],
         ]);
 
         $vendor->user->name = $validated['name'];
@@ -174,6 +170,25 @@ class VendorController extends Controller
 
         $vendor->save();
 
+        if ($vendor->user) {
+            $vendor->user->notify(new GenericNotification(
+                title: 'Vendor Profile Updated',
+                message: 'Your store "' . $vendor->store_name . '" details/status have been updated. Current status: ' . ucfirst($vendor->status),
+                type: 'info',
+                url: route('dashboard')
+            ));
+        }
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'Vendor Updated',
+                message: 'Vendor store "' . $vendor->store_name . '" has been updated.',
+                type: 'info',
+                url: route('admin.vendors.show', $vendor->id)
+            ));
+        }
+
         return redirect()->route('admin.vendors.index')->with('success', 'Vendor updated successfully.');
     }
 
@@ -198,11 +213,22 @@ class VendorController extends Controller
             Storage::disk('public')->delete($vendor->banner);
         }
 
+        $storeName = $vendor->store_name;
         $user = $vendor->user;
         $vendor->delete();
 
         if ($user) {
             $user->delete();
+        }
+
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new GenericNotification(
+                title: 'Vendor Deleted',
+                message: 'Vendor store "' . $storeName . '" has been removed permanently.',
+                type: 'error',
+                url: route('admin.vendors.index')
+            ));
         }
 
         return redirect()->route('admin.vendors.index')->with('success', 'Vendor deleted successfully.');

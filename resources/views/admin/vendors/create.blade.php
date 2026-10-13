@@ -22,15 +22,7 @@
                 </p>
             </div>
 
-            @if ($errors->any())
-                <div class="mb-6 px-5 py-4 rounded-xl bg-red-500/10 border border-red-500/20">
-                    <ul class="list-disc list-inside text-sm text-red-400 space-y-1">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            @include('components.alerts')
 
             <form action="{{ route('admin.vendors.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                 @csrf
@@ -46,7 +38,8 @@
                                 Vendor Name
                             </label>
 
-                            <input type="text" name="name" value="{{ old('name') }}" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
+                            <input type="text" name="name" value="{{ old('name') }}" required
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
                         </div>
 
                         <div>
@@ -54,7 +47,8 @@
                                 Email
                             </label>
 
-                            <input type="email" name="email" value="{{ old('email') }}" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
+                            <input type="email" name="email" value="{{ old('email') }}" required
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
                         </div>
 
                         <div>
@@ -62,7 +56,8 @@
                                 Password
                             </label>
 
-                            <input type="password" name="password" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
+                            <input type="password" name="password" required
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
                         </div>
 
                         <div>
@@ -70,7 +65,8 @@
                                 Confirm Password
                             </label>
 
-                            <input type="password" name="password_confirmation" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
+                            <input type="password" name="password_confirmation" required
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
                         </div>
 
                     </div>
@@ -87,7 +83,8 @@
                                 Store Name
                             </label>
 
-                            <input type="text" name="store_name" value="{{ old('store_name') }}" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
+                            <input type="text" name="store_name" value="{{ old('store_name') }}" required
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
                         </div>
 
                         <div>
@@ -95,7 +92,8 @@
                                 Description
                             </label>
 
-                            <textarea name="description" rows="5" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">{{ old('description') }}</textarea>
+                            <textarea name="description" rows="5"
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">{{ old('description') }}</textarea>
                         </div>
 
                         <div>
@@ -103,7 +101,8 @@
                                 Phone
                             </label>
 
-                            <input type="text" name="phone" value="{{ old('phone') }}" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
+                            <input type="text" name="phone" value="{{ old('phone') }}"
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-6">
@@ -112,7 +111,8 @@
                                     Store Logo
                                 </label>
 
-                                <input type="file" name="logo" accept="image/*" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-400">
+                                <input type="file" name="logo" accept="image/*"
+                                    class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-400">
                             </div>
 
                             <div>
@@ -120,7 +120,8 @@
                                     Store Banner
                                 </label>
 
-                                <input type="file" name="banner" accept="image/*" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-400">
+                                <input type="file" name="banner" accept="image/*"
+                                    class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-stone-400">
                             </div>
 
                         </div>
@@ -138,17 +139,23 @@
                                 Address
                             </label>
 
-                            <input type="text" name="address" value="{{ old('address') }}" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
+                            <input type="text" name="address" value="{{ old('address') }}"
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-6">
-                            <input type="text" name="city" placeholder="City" value="{{ old('city') }}" class="px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
+                            <input type="text" name="city" placeholder="City" value="{{ old('city') }}"
+                                class="px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
 
-                            <input type="text" name="state" placeholder="State / Province" value="{{ old('state') }}" class="px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
+                            <input type="text" name="state" placeholder="State / Province" value="{{ old('state') }}"
+                                class="px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
 
-                            <input type="text" name="country" placeholder="Country" value="{{ old('country') }}" class="px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
+                            <input type="text" name="country" placeholder="Country" value="{{ old('country') }}"
+                                class="px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
 
-                            <input type="text" name="postal_code" placeholder="Postal Code" value="{{ old('postal_code') }}" class="px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
+                            <input type="text" name="postal_code" placeholder="Postal Code"
+                                value="{{ old('postal_code') }}"
+                                class="px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
                         </div>
                     </div>
                 </div>
@@ -158,7 +165,8 @@
                         Vendor Status
                     </label>
 
-                    <select name="status" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
+                    <select name="status"
+                        class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white">
                         <option value="pending" {{ old('status') === 'pending' ? 'selected' : '' }}>
                             Pending
                         </option>
@@ -179,11 +187,13 @@
                 </div>
 
                 <div class="flex justify-end gap-3">
-                    <a href="{{ route('admin.vendors.index') }}" class="px-6 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-sm font-semibold transition">
+                    <a href="{{ route('admin.vendors.index') }}"
+                        class="px-6 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-sm font-semibold transition">
                         Cancel
                     </a>
 
-                    <button type="submit" class="px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-bold transition">
+                    <button type="submit"
+                        class="px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-bold transition">
                         Create Vendor
                     </button>
                 </div>

@@ -12,23 +12,7 @@
             </p>
         </div>
 
-        @if (session('error'))
-            <div class="px-5 py-4 rounded-xl bg-red-400/10 border border-red-400/20 text-red-400 text-sm">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="px-5 py-4 rounded-xl bg-red-400/10 border border-red-400/20 text-red-400 text-sm">
-                <ul class="list-disc list-inside space-y-1">
-                    @foreach ($errors->all() as $error)
-                        <li>
-                            {{ $error }}
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('components.alerts')
 
         <form action="{{ route('checkout.place') }}" method="POST">
             @csrf
@@ -44,28 +28,36 @@
                             <label class="block text-xs uppercase tracking-wider text-stone-500 mb-2">
                                 Full Name
                             </label>
-                            <input type="text" name="shipping_name" value="{{ old('shipping_name', auth()->user()->name) }}" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:outline-none focus:border-amber-400">
+                            <input type="text" name="shipping_name"
+                                value="{{ old('shipping_name', auth()->user()->name) }}" required
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:outline-none focus:border-amber-400">
                         </div>
 
                         <div>
                             <label class="block text-xs uppercase tracking-wider text-stone-500 mb-2">
                                 Email
                             </label>
-                            <input type="email" name="shipping_email" value="{{ old('shipping_email', auth()->user()->email) }}" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:outline-none focus:border-amber-400">
+                            <input type="email" name="shipping_email"
+                                value="{{ old('shipping_email', auth()->user()->email) }}" required
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:outline-none focus:border-amber-400">
                         </div>
 
                         <div>
                             <label class="block text-xs uppercase tracking-wider text-stone-500 mb-2">
                                 Phone
                             </label>
-                            <input type="text" name="shipping_phone" value="{{ old('shipping_phone') }}" placeholder="03001234567" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">
+                            <input type="text" name="shipping_phone" value="{{ old('shipping_phone') }}"
+                                placeholder="03001234567" required
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">
                         </div>
 
                         <div>
                             <label class="block text-xs uppercase tracking-wider text-stone-500 mb-2">
                                 City
                             </label>
-                            <input type="text" name="shipping_city" value="{{ old('shipping_city') }}" placeholder="Multan" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">
+                            <input type="text" name="shipping_city" value="{{ old('shipping_city') }}"
+                                placeholder="Multan" required
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">
                         </div>
 
                         <div class="md:col-span-2">
@@ -73,7 +65,8 @@
                                 Shipping Address
                             </label>
 
-                            <textarea name="shipping_address" rows="3" required placeholder="House / Street / Area" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">{{ old('shipping_address') }}</textarea>
+                            <textarea name="shipping_address" rows="3" required placeholder="House / Street / Area"
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">{{ old('shipping_address') }}</textarea>
                         </div>
 
                         <div>
@@ -81,7 +74,9 @@
                                 Postal Code
                             </label>
 
-                            <input type="text" name="shipping_postal_code" value="{{ old('shipping_postal_code') }}" placeholder="60000" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">
+                            <input type="text" name="shipping_postal_code" value="{{ old('shipping_postal_code') }}"
+                                placeholder="60000"
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">
                         </div>
 
                         <div class="md:col-span-2">
@@ -111,7 +106,8 @@
                                 </span>
                             </label>
 
-                            <textarea name="notes" rows="3" placeholder="Any special instructions..." class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">{{ old('notes') }}</textarea>
+                            <textarea name="notes" rows="3" placeholder="Any special instructions..."
+                                class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-700 focus:outline-none focus:border-amber-400">{{ old('notes') }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -175,11 +171,13 @@
                     </div>
 
 
-                    <button type="submit" class="w-full mt-6 px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-semibold transition">
+                    <button type="submit"
+                        class="w-full mt-6 px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-semibold transition">
                         Place Order
                     </button>
 
-                    <a href="{{ route('cart.index') }}" class="block text-center mt-3 text-xs text-stone-500 hover:text-white">
+                    <a href="{{ route('cart.index') }}"
+                        class="block text-center mt-3 text-xs text-stone-500 hover:text-white">
                         ← Back to Cart
                     </a>
                 </div>

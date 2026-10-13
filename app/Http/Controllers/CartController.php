@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\GenericNotification;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -36,7 +38,7 @@ class CartController extends Controller
         $shipping = $subtotal > 0 ? 10 : 0;
         $total = $subtotal + $shipping;
 
-        return view('cart.index', compact( 'cartItems', 'subtotal', 'shipping', 'total'));
+        return view('cart.index', compact('cartItems', 'subtotal', 'shipping', 'total'));
     }
 
     public function add(Request $request, Product $product)
@@ -56,7 +58,7 @@ class CartController extends Controller
         }
 
         if ($quantity > $product->stock) {
-            return back()->with( 'error',"Only {$product->stock} item(s) are available.");
+            return back()->with('error', "Only {$product->stock} item(s) are available.");
         }
 
         $cart = session()->get('cart', []);
@@ -64,15 +66,24 @@ class CartController extends Controller
         $newQuantity = $currentQuantity + $quantity;
 
         if ($newQuantity > $product->stock) {
-            return back()->with( 'error', "Only {$product->stock} item(s) are available."
-            );
+            return back()->with('error', "Only {$product->stock} item(s) are available.");
         }
 
         $cart[$product->id] = $newQuantity;
         session()->put('cart', $cart);
-        return back()->with('success','Product added to cart successfully.'
-        );
+
+        if ($request->user()) {
+            $request->user()->notify(new GenericNotification(
+                title: 'Item Added to Cart',
+                message: "You added {$quantity}x \"{$product->name}\" to your shopping cart.",
+                type: 'info',
+                url: route('cart.index')
+            ));
+        }
+
+        return back()->with('success', 'Product added to cart successfully.');
     }
+
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
@@ -86,26 +97,35 @@ class CartController extends Controller
         $quantity = $validated['quantity'];
 
         if (!$product->status) {
-            return back()->with( 'error', 'This product is currently unavailable.');
+            return back()->with('error', 'This product is currently unavailable.');
         }
 
         if ($quantity > $product->stock) {
-            return back()->with( 'error', "Only {$product->stock} item(s) are available.");
+            return back()->with('error', "Only {$product->stock} item(s) are available.");
         }
 
         $cart = session()->get('cart', []);
 
         if (!isset($cart[$product->id])) {
-            return back()->with( 'error', 'Product is not in your cart.');
+            return back()->with('error', 'Product is not in your cart.');
         }
 
         $cart[$product->id] = $quantity;
         session()->put('cart', $cart);
 
-        return back()->with( 'success', 'Cart updated successfully.');
+        if ($request->user()) {
+            $request->user()->notify(new GenericNotification(
+                title: 'Cart Updated',
+                message: "Quantity for \"{$product->name}\" was updated to {$quantity}.",
+                type: 'info',
+                url: route('cart.index')
+            ));
+        }
+
+        return back()->with('success', 'Cart updated successfully.');
     }
 
-    public function remove(Product $product)
+    public function remove(Request $request, Product $product)
     {
         $cart = session()->get('cart', []);
 
@@ -115,12 +135,30 @@ class CartController extends Controller
 
         session()->put('cart', $cart);
 
-        return back()->with( 'success', 'Product removed from cart.');
+        if ($request->user()) {
+            $request->user()->notify(new GenericNotification(
+                title: 'Item Removed',
+                message: "\"{$product->name}\" has been removed from your cart.",
+                type: 'warning',
+                url: route('cart.index')
+            ));
+        }
+
+        return back()->with('success', 'Product removed from cart.');
     }
 
-    public function clear()
+    public function clear(Request $request)
     {
         session()->forget('cart');
+
+        if ($request->user()) {
+            $request->user()->notify(new GenericNotification(
+                title: 'Cart Cleared',
+                message: 'All items have been removed from your shopping cart.',
+                type: 'warning',
+                url: route('cart.index')
+            ));
+        }
 
         return redirect()->route('cart.index')->with('success', 'Cart cleared successfully.');
     }

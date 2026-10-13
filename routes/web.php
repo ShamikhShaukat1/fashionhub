@@ -12,26 +12,28 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\NotificationController;
 
-
+// Landing Page
 Route::get('/', [LandingController::class, 'index'])->name('home');
 
+// Guest Routes
 Route::middleware('guest')->group(function () {
-
-    // Login
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 
-    // Register
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
 
+// Logout
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
+// Authenticated User Routes (Customers & Admins)
 Route::middleware('auth')->group(function () {
 
-    // Normal user dashboard
+    // Dashboard & Products
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
@@ -51,14 +53,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'customerOrders'])->name('orders.index');
     Route::get('/orders/confirmation/{order}', [OrderController::class, 'confirmation'])->name('orders.confirmation');
     Route::get('/orders/{order}', [OrderController::class, 'customerShow'])->name('orders.show');
+
+    // Global Notifications (Accessible to all authenticated users)
+    Route::prefix('notifications')->name('notifications.')->controller(NotificationController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{notification}/open', 'open')->name('open');
+        Route::patch('/{notification}/read', 'markAsRead')->name('read');
+        Route::patch('/read-all', 'markAllAsRead')->name('readAll');
+        Route::delete('/{notification}', 'destroy')->name('destroy');
+    });
 });
 
-
+// Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
 
-    // Products
+    // Products Management
     Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
@@ -67,7 +78,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/products/{product}/delete', [ProductController::class, 'delete'])->name('products.delete');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-    // Categories
+    // Categories Management
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
@@ -77,7 +88,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/categories/{category}/delete', [CategoryController::class, 'confirmDelete'])->name('categories.delete');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-    // Customers
+    // Customers Management
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
     Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');
     Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
@@ -85,14 +96,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/customers/{customer}/delete', [CustomerController::class, 'confirmDelete'])->name('customers.delete');
     Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
-
-    // Orders
+    // Orders Management
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
-    // Vendors
+    // Vendors Management
     Route::get('/vendors', [VendorController::class, 'index'])->name('vendors.index');
     Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
     Route::post('/vendors', [VendorController::class, 'store'])->name('vendors.store');
@@ -111,4 +121,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/inventory/adjust', [InventoryController::class, 'create'])->name('inventory.create');
     Route::post('/inventory/adjust', [InventoryController::class, 'store'])->name('inventory.store');
     Route::get('/inventory/{product}', [InventoryController::class, 'show'])->name('inventory.show');
+
+    // Settings
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::put('/settings/notifications', [SettingController::class, 'updateNotifications'])->name('settings.notifications');
+    Route::put('/settings/profile', [SettingController::class, 'updateProfile'])->name('settings.profile');
+    Route::put('/settings/password', [SettingController::class, 'updatePassword'])->name('settings.password');
 });

@@ -13,11 +13,7 @@
         </div>
 
 
-        @if (session('success'))
-            <div class="px-5 py-4 rounded-xl bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 text-sm">
-                {{ session('success') }}
-            </div>
-        @endif
+        @include('components.alerts')
 
         @if ($orders->count())
             <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
@@ -51,13 +47,13 @@
                             @foreach ($orders as $order)
                                 @php
                                     $statusClass = match ($order->status) {
-                                        'pending'    => 'bg-yellow-400/10 text-yellow-400',
-                                        'confirmed'  => 'bg-blue-400/10 text-blue-400',
+                                        'pending' => 'bg-yellow-400/10 text-yellow-400',
+                                        'confirmed' => 'bg-blue-400/10 text-blue-400',
                                         'processing' => 'bg-purple-400/10 text-purple-400',
-                                        'shipped'    => 'bg-indigo-400/10 text-indigo-400',
-                                        'delivered'  => 'bg-emerald-400/10 text-emerald-400',
-                                        'cancelled'  => 'bg-red-400/10 text-red-400',
-                                        default      => 'bg-stone-800 text-stone-400',
+                                        'shipped' => 'bg-indigo-400/10 text-indigo-400',
+                                        'delivered' => 'bg-emerald-400/10 text-emerald-400',
+                                        'cancelled' => 'bg-red-400/10 text-red-400',
+                                        default => 'bg-stone-800 text-stone-400',
                                     };
                                 @endphp
 
@@ -81,14 +77,16 @@
                                     </td>
 
                                     <td class="px-6 py-5">
-                                        <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold {{ $statusClass }}">
+                                        <span
+                                            class="inline-flex px-3 py-1 rounded-full text-xs font-semibold {{ $statusClass }}">
                                             {{ ucfirst($order->status) }}
                                         </span>
                                     </td>
 
 
                                     <td class="px-6 py-5 text-right">
-                                        <a href="{{ route('orders.show', $order) }}" class="inline-flex px-4 py-2 rounded-lg bg-stone-800 hover:bg-amber-400 text-stone-300 hover:text-stone-950 text-xs font-semibold transition">
+                                        <a href="{{ route('orders.show', $order) }}"
+                                            class="inline-flex px-4 py-2 rounded-lg bg-stone-800 hover:bg-amber-400 text-stone-300 hover:text-stone-950 text-xs font-semibold transition">
                                             View Order
                                         </a>
                                     </td>

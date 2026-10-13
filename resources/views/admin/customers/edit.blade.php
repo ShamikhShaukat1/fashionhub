@@ -16,17 +16,7 @@
             </p>
         </div>
 
-        @if ($errors->any())
-            <div class="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20">
-                <ul class="space-y-1 text-sm text-red-400">
-                    @foreach ($errors->all() as $error)
-                        <li>
-                            {{ $error }}
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('components.alerts')
 
         <div class="bg-stone-900 border border-stone-800 rounded-2xl p-8">
             <form action="{{ route('admin.customers.update', $customer) }}" method="POST">
@@ -38,7 +28,8 @@
                         Name
                     </label>
 
-                    <input type="text" name="name" value="{{ old('name', $customer->name) }}" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
+                    <input type="text" name="name" value="{{ old('name', $customer->name) }}" required
+                        class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
                     @error('name')
                         <p class="text-xs text-red-400 mt-2">
                             {{ $message }}
@@ -51,7 +42,8 @@
                         Email
                     </label>
 
-                    <input type="email" name="email" value="{{ old('email', $customer->email) }}" required class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
+                    <input type="email" name="email" value="{{ old('email', $customer->email) }}" required
+                        class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none">
                     @error('email')
                         <p class="text-xs text-red-400 mt-2">
                             {{ $message }}
@@ -74,12 +66,14 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-3">
-                    <a href="{{ route('admin.customers.index') }}" class="px-5 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-sm font-semibold">
+                    <a href="{{ route('admin.customers.index') }}"
+                        class="px-5 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-sm font-semibold">
                         Cancel
                     </a>
 
 
-                    <button type="submit" class="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-semibold">
+                    <button type="submit"
+                        class="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-semibold">
                         Update Customer
                     </button>
                 </div>

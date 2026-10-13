@@ -18,22 +18,13 @@
                     </p>
                 </div>
 
-                <a href="{{ route('admin.vendors.create') }}" class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-bold transition">
+                <a href="{{ route('admin.vendors.create') }}"
+                    class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-bold transition">
                     + Add Vendor
                 </a>
             </div>
 
-            @if (session('success'))
-                <div class="mb-6 px-5 py-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="mb-6 px-5 py-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-                    {{ session('error') }}
-                </div>
-            @endif
+            @include('components.alerts')
 
             <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
                 <div class="overflow-x-auto">
@@ -111,19 +102,23 @@
 
                                     <td class="px-6 py-5">
                                         @if ($vendor->status === 'active')
-                                            <span class="px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold bg-emerald-500/10 text-emerald-400">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold bg-emerald-500/10 text-emerald-400">
                                                 Active
                                             </span>
                                         @elseif ($vendor->status === 'pending')
-                                            <span class="px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold bg-amber-500/10 text-amber-400">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold bg-amber-500/10 text-amber-400">
                                                 Pending
                                             </span>
                                         @elseif ($vendor->status === 'suspended')
-                                            <span class="px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold bg-orange-500/10 text-orange-400">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold bg-orange-500/10 text-orange-400">
                                                 Suspended
                                             </span>
                                         @else
-                                            <span class="px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold bg-red-500/10 text-red-400">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-bold bg-red-500/10 text-red-400">
                                                 Rejected
                                             </span>
                                         @endif
@@ -131,15 +126,18 @@
 
                                     <td class="px-6 py-5">
                                         <div class="flex justify-end items-center gap-2">
-                                            <a href="{{ route('admin.vendors.show', $vendor) }}" class="px-3 py-2 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white text-xs font-semibold transition">
+                                            <a href="{{ route('admin.vendors.show', $vendor) }}"
+                                                class="px-3 py-2 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white text-xs font-semibold transition">
                                                 View
                                             </a>
 
-                                            <a href="{{ route('admin.vendors.edit', $vendor) }}" class="px-3 py-2 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-400 text-xs font-semibold transition">
+                                            <a href="{{ route('admin.vendors.edit', $vendor) }}"
+                                                class="px-3 py-2 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-400 text-xs font-semibold transition">
                                                 Edit
                                             </a>
 
-                                            <a href="{{ route('admin.vendors.delete', $vendor) }}" class="px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-semibold transition">
+                                            <a href="{{ route('admin.vendors.delete', $vendor) }}"
+                                                class="px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-semibold transition">
                                                 Delete
                                             </a>
                                         </div>

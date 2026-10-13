@@ -4,7 +4,8 @@
     <div class="min-h-screen bg-stone-950 px-6 py-10">
         <div class="max-w-6xl mx-auto">
             <div class="mb-8">
-                <a href="{{ route('admin.vendors.index') }}" class="text-xs uppercase tracking-widest text-stone-500 hover:text-amber-400 transition">
+                <a href="{{ route('admin.vendors.index') }}"
+                    class="text-xs uppercase tracking-widest text-stone-500 hover:text-amber-400 transition">
                     ← Back to Vendors
                 </a>
 
@@ -13,7 +14,8 @@
             <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden mb-8">
                 @if ($vendor->banner)
                     <div class="h-56 overflow-hidden">
-                        <img src="{{ asset('storage/' . $vendor->banner) }}" alt="{{ $vendor->store_name }}" class="w-full h-full object-cover">
+                        <img src="{{ asset('storage/' . $vendor->banner) }}" alt="{{ $vendor->store_name }}"
+                            class="w-full h-full object-cover">
                     </div>
                 @else
                     <div class="h-40 bg-stone-800 flex items-center justify-center">
@@ -24,9 +26,11 @@
                 <div class="p-8">
                     <div class="flex flex-col md:flex-row md:items-center gap-6">
                         @if ($vendor->logo)
-                            <img src="{{ asset('storage/' . $vendor->logo) }}" alt="{{ $vendor->store_name }}" class="w-24 h-24 rounded-2xl object-cover border border-stone-700">
+                            <img src="{{ asset('storage/' . $vendor->logo) }}" alt="{{ $vendor->store_name }}"
+                                class="w-24 h-24 rounded-2xl object-cover border border-stone-700">
                         @else
-                            <div class="w-24 h-24 rounded-2xl bg-amber-400 text-stone-950 flex items-center justify-center text-3xl font-bold">
+                            <div
+                                class="w-24 h-24 rounded-2xl bg-amber-400 text-stone-950 flex items-center justify-center text-3xl font-bold">
                                 {{ strtoupper(substr($vendor->store_name, 0, 1)) }}
                             </div>
                         @endif
@@ -64,19 +68,7 @@
                 </div>
             </div>
 
-            @if (session('success'))
-                <div
-                    class="mb-6 px-5 py-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div
-                    class="mb-6 px-5 py-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-                    {{ session('error') }}
-                </div>
-            @endif
+            @include('components.alerts')
 
             <div class="grid lg:grid-cols-2 gap-6 mb-8">
                 <div class="bg-stone-900 border border-stone-800 rounded-2xl p-6">
@@ -219,11 +211,13 @@
             </div>
 
             <div class="flex justify-end gap-3 mt-6">
-                <a href="{{ route('admin.vendors.edit', $vendor) }}" class="px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-bold transition">
+                <a href="{{ route('admin.vendors.edit', $vendor) }}"
+                    class="px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-bold transition">
                     Edit Vendor
                 </a>
 
-                <a href="{{ route('admin.vendors.delete', $vendor) }}" class="px-6 py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm font-semibold transition">
+                <a href="{{ route('admin.vendors.delete', $vendor) }}"
+                    class="px-6 py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm font-semibold transition">
                     Delete Vendor
                 </a>
             </div>

@@ -14,23 +14,7 @@
             </div>
         </div>
 
-        @if (session('success'))
-            <div class="px-5 py-4 rounded-xl bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 text-sm">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="px-5 py-4 rounded-xl bg-red-400/10 border border-red-400/20 text-red-400 text-sm">
-                <ul class="list-disc list-inside space-y-1">
-                    @foreach ($errors->all() as $error)
-                        <li>
-                            {{ $error }}
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('components.alerts')
 
         <div class="bg-stone-900 border border-stone-800 rounded-2xl p-5">
             <form method="GET" action="{{ route('admin.orders.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -39,7 +23,9 @@
                         Search Orders
                     </label>
 
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Order number, customer name or email..." class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-600 focus:outline-none focus:border-amber-400 transition">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Order number, customer name or email..."
+                        class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white placeholder-stone-600 focus:outline-none focus:border-amber-400 transition">
                 </div>
 
                 <div>
@@ -47,7 +33,8 @@
                         Status
                     </label>
 
-                    <select name="status" class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:outline-none focus:border-amber-400 transition">
+                    <select name="status"
+                        class="w-full px-4 py-3 rounded-xl bg-stone-950 border border-stone-800 text-white focus:outline-none focus:border-amber-400 transition">
                         <option value="">
                             All Statuses
                         </option>
@@ -80,11 +67,13 @@
                 </div>
 
                 <div class="md:col-span-3 flex gap-3">
-                    <button type="submit" class="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-semibold transition">
+                    <button type="submit"
+                        class="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-sm font-semibold transition">
                         Filter Orders
                     </button>
 
-                    <a href="{{ route('admin.orders.index') }}" class="px-5 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white text-sm font-semibold transition">
+                    <a href="{{ route('admin.orders.index') }}"
+                        class="px-5 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white text-sm font-semibold transition">
                         Clear
                     </a>
                 </div>
@@ -134,7 +123,8 @@
                                     Status
                                 </th>
 
-                                <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-stone-500 font-semibold text-right">
+                                <th
+                                    class="px-6 py-4 text-[10px] uppercase tracking-widest text-stone-500 font-semibold text-right">
                                     Action
                                 </th>
                             </tr>
@@ -211,7 +201,8 @@
 
                                     <td class="px-6 py-5">
                                         <div class="space-y-2">
-                                            <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold {{ $paymentClass }}">
+                                            <span
+                                                class="inline-flex px-3 py-1 rounded-full text-xs font-semibold {{ $paymentClass }}">
                                                 {{ ucfirst($order->payment_status) }}
                                             </span>
 
@@ -224,13 +215,15 @@
                                     </td>
 
                                     <td class="px-6 py-5">
-                                        <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold {{ $statusClass }}">
+                                        <span
+                                            class="inline-flex px-3 py-1 rounded-full text-xs font-semibold {{ $statusClass }}">
                                             {{ ucfirst($order->status) }}
                                         </span>
                                     </td>
 
                                     <td class="px-6 py-5 text-right">
-                                        <a href="{{ route('admin.orders.show', $order) }}" class="inline-flex items-center px-4 py-2 rounded-lg bg-stone-800 hover:bg-amber-400 text-stone-300 hover:text-stone-950 text-xs font-semibold transition">
+                                        <a href="{{ route('admin.orders.show', $order) }}"
+                                            class="inline-flex items-center px-4 py-2 rounded-lg bg-stone-800 hover:bg-amber-400 text-stone-300 hover:text-stone-950 text-xs font-semibold transition">
                                             View Order
                                         </a>
                                     </td>
@@ -241,7 +234,8 @@
                                 <tr>
                                     <td colspan="7" class="px-6 py-16 text-center">
                                         <div class="flex flex-col items-center justify-center">
-                                            <div class="w-16 h-16 rounded-2xl bg-stone-800 flex items-center justify-center text-2xl mb-4">
+                                            <div
+                                                class="w-16 h-16 rounded-2xl bg-stone-800 flex items-center justify-center text-2xl mb-4">
                                                 🛒
                                             </div>
 
@@ -267,8 +261,7 @@
                 @endif
             @else
                 <div class="px-6 py-16 text-center">
-                    <div
-                        class="flex flex-col items-center justify-center">
+                    <div class="flex flex-col items-center justify-center">
                         <div class="w-16 h-16 rounded-2xl bg-stone-800 flex items-center justify-center text-2xl mb-4">
                             🛒
                         </div>

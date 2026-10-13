@@ -20,27 +20,7 @@
             </a>
         </div>
 
-        @if (session('success'))
-            <div class="mb-6 px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="mb-6 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="mb-6 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400">
-                <ul class="list-disc list-inside text-sm">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('components.alerts')
 
         <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
             <div class="p-6 border-b border-stone-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">

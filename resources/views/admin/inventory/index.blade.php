@@ -22,11 +22,7 @@
             </a>
         </div>
 
-        @if (session('success'))
-            <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 text-emerald-400">
-                {{ session('success') }}
-            </div>
-        @endif
+        @include('components.alerts')
 
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
             <div class="bg-stone-900/60 border border-stone-800/80 rounded-2xl p-6">
