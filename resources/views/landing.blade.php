@@ -106,6 +106,26 @@
 
 <body class="font-jakarta text-stone-100 antialiased"
     style="background:#0c0a09;font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;">
+    @php
+        $u = fn($id, $w = 1000) => "https://images.unsplash.com/photo-{$id}?auto=format&fit=crop&w={$w}&q=80";
+        $img = [
+            'hero' => $u('1515886657613-9f3515b0c78f', 1200),
+            'cta' => $u('1441986300917-64674bd600d8', 1800),
+            'about' => $u('1445205170230-053b83016050', 1200),
+            'about2' => $u('1483985988355-763728e1935b', 800),
+            'cards' => [
+                $u('1490481651871-ab68de25d43d', 900),
+                $u('1469334031218-e382a71b716b', 900),
+                $u('1509631179647-0177331693ae', 900),
+            ],
+            'gallery' => [
+                ['Streetwear', $u('1529139574466-a303027c1d8b', 800)],
+                ['Formal', $u('1483985988355-763728e1935b', 800)],
+                ['Casual', $u('1490481651871-ab68de25d43d', 800)],
+                ['Accessories', $u('1445205170230-053b83016050', 800)],
+            ],
+        ];
+    @endphp
 
     <div id="progress" class="fixed top-0 left-0 z-[60] h-[3px]"
         style="width:0%;background:linear-gradient(90deg,#fbbf24,#fcd34d);box-shadow:0 0 12px rgba(251,191,36,.7);">
@@ -246,32 +266,32 @@
 
                             <div class="animate-float absolute inset-0 rounded-[2rem] border border-stone-700/80 overflow-hidden"
                                 style="background:linear-gradient(160deg,#292524 0%,#1c1917 45%,#0c0a09 100%);box-shadow:0 0 0 1px rgba(251,191,36,.1),0 40px 100px rgba(0,0,0,.6),0 0 80px rgba(251,191,36,.08);">
+                                <img src="{{ $img['hero'] }}" alt="Fashion Hub model wearing the new collection"
+                                    class="absolute inset-0 w-full h-full object-cover" loading="eager"
+                                    onerror="this.style.display='none'">
 
                                 <div class="absolute inset-0"
-                                    style="background:linear-gradient(135deg,rgba(251,191,36,.18),transparent 55%,rgba(12,10,9,.9));">
+                                    style="background:linear-gradient(135deg,rgba(251,191,36,.15),transparent 50%,rgba(12,10,9,.85));">
                                 </div>
+                                <div class="absolute inset-x-0 bottom-0 h-2/5"
+                                    style="background:linear-gradient(to top,rgba(12,10,9,.95),transparent);"></div>
 
                                 <div class="absolute inset-y-0 left-0 w-1/4 animate-sheen"
                                     style="background:linear-gradient(90deg,transparent,rgba(252,211,77,.12),transparent);">
                                 </div>
 
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="font-extrabold leading-none select-none"
-                                        style="font-size:190px;color:transparent;-webkit-text-stroke:1.5px rgba(251,191,36,.22);transform:translateZ(20px);">
-                                        FH</div>
-                                </div>
-
-                                <div class="absolute inset-0 flex items-center justify-center"
-                                    style="transform:translateZ(60px);">
-                                    <div class="text-center relative z-10">
-                                        <div class="relative w-24 h-24 mx-auto rounded-3xl bg-amber-400 flex items-center justify-center"
-                                            style="box-shadow:0 20px 60px rgba(251,191,36,.45),inset 0 2px 0 rgba(255,255,255,.5);">
+                                <div class="absolute bottom-0 inset-x-0 p-8" style="transform:translateZ(60px);">
+                                    <div class="flex items-center gap-4">
+                                        <div class="relative w-14 h-14 rounded-2xl bg-amber-400 flex items-center justify-center"
+                                            style="box-shadow:0 12px 36px rgba(251,191,36,.45),inset 0 2px 0 rgba(255,255,255,.5);">
                                             <span
-                                                class="absolute -inset-3 rounded-[2rem] border border-amber-400/30 animate-pulse-soft"></span>
-                                            <span class="text-3xl font-extrabold text-stone-950">FH</span>
+                                                class="absolute -inset-2 rounded-[1.25rem] border border-amber-400/30 animate-pulse-soft"></span>
+                                            <span class="text-xl font-extrabold text-stone-950">FH</span>
                                         </div>
-                                        <h3 class="mt-6 text-3xl font-extrabold">Fashion Hub</h3>
-                                        <p class="mt-2 text-sm text-stone-500">Style. Quality. You.</p>
+                                        <div>
+                                            <h3 class="text-2xl font-extrabold">Fashion Hub</h3>
+                                            <p class="text-sm text-stone-300">Style. Quality. You.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -282,7 +302,7 @@
                                 <p class="mt-1 text-sm font-bold text-amber-400">Your Identity</p>
                             </div>
 
-                            <div class="animate-float absolute bottom-8 -left-8 rounded-2xl px-5 py-4 border border-stone-700"
+                            <div class="animate-float absolute bottom-28 -left-8 rounded-2xl px-5 py-4 border border-stone-700"
                                 style="background:rgba(28,25,23,.75);backdrop-filter:blur(18px);box-shadow:0 20px 50px rgba(0,0,0,.5);transform:translateZ(80px);animation-delay:-2s;">
                                 <div class="flex items-center gap-3">
                                     <div
@@ -327,6 +347,38 @@
             </div>
         </section>
 
+        <section class="relative py-24" style="background:#0c0a09;">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="max-w-2xl" data-reveal>
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-amber-400">Shop by Category</p>
+                    <h2 class="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight">Find your <span
+                            class="text-amber-400">signature</span> look.</h2>
+                </div>
+
+                <div class="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-5">
+                    @foreach ($img['gallery'] as $i => $g)
+                        <a href="{{ route('register') }}" data-reveal data-delay="{{ $i * 120 }}"
+                            class="group relative block overflow-hidden rounded-2xl border border-stone-800 aspect-[3/4] bg-stone-900 hover:border-amber-400/50 transition duration-500">
+                            <img src="{{ $g[1] }}" alt="{{ $g[0] }} fashion" loading="lazy"
+                                class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110"
+                                onerror="this.style.display='none'">
+                            <div class="absolute inset-0"
+                                style="background:linear-gradient(to top,rgba(12,10,9,.9) 0%,rgba(12,10,9,.1) 55%,transparent);">
+                            </div>
+                            <div class="absolute bottom-0 inset-x-0 p-5 flex items-end justify-between">
+                                <div>
+                                    <p class="text-[10px] uppercase tracking-[0.25em] text-amber-400">Category</p>
+                                    <h3 class="mt-1 text-lg font-bold">{{ $g[0] }}</h3>
+                                </div>
+                                <span
+                                    class="w-9 h-9 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center font-bold opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition duration-300">→</span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+
         <section id="collection" class="relative py-28 overflow-hidden" style="background:#0c0a09;">
             <div class="absolute left-1/2 top-0 -translate-x-1/2 w-[700px] h-[300px] pointer-events-none"
                 style="background:radial-gradient(ellipse,rgba(251,191,36,.08),transparent 70%);"></div>
@@ -363,17 +415,29 @@
                     @endphp
                     @foreach ($cards as $i => $c)
                         <div data-reveal data-delay="{{ $i * 150 }}"
-                            class="group relative overflow-hidden rounded-2xl border border-stone-800 p-8 transition duration-500 hover:-translate-y-2 hover:border-amber-400/40"
+                            class="group relative overflow-hidden rounded-2xl border border-stone-800 transition duration-500 hover:-translate-y-2 hover:border-amber-400/40"
                             style="background:linear-gradient(160deg,rgba(41,37,36,.7),rgba(28,25,23,.6));box-shadow:0 20px 50px rgba(0,0,0,.3);">
-                            <div class="absolute -top-20 -right-20 w-48 h-48 rounded-full opacity-0 group-hover:opacity-100 transition duration-500"
-                                style="background:radial-gradient(circle,rgba(251,191,36,.25),transparent 70%);"></div>
-                            <div
-                                class="relative w-14 h-14 rounded-2xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center transition duration-500 group-hover:bg-amber-400 group-hover:rotate-12 group-hover:scale-110">
-                                <span
-                                    class="text-2xl text-amber-400 transition duration-500 group-hover:text-stone-950">{{ $c[0] }}</span>
+
+                            <div class="relative h-56 overflow-hidden bg-stone-900">
+                                <img src="{{ $img['cards'][$i] }}" alt="{{ $c[1] }}" loading="lazy"
+                                    class="w-full h-full object-cover transition duration-700 group-hover:scale-110"
+                                    onerror="this.style.display='none'">
+                                <div class="absolute inset-0"
+                                    style="background:linear-gradient(to top,rgba(28,25,23,1),transparent 60%);">
+                                </div>
+                                <div class="absolute top-4 right-4 w-12 h-12 rounded-2xl bg-amber-400/90 border border-amber-400/20 flex items-center justify-center transition duration-500 group-hover:rotate-12 group-hover:scale-110"
+                                    style="backdrop-filter:blur(8px);">
+                                    <span class="text-xl text-stone-950">{{ $c[0] }}</span>
+                                </div>
                             </div>
-                            <h3 class="relative mt-7 text-xl font-bold">{{ $c[1] }}</h3>
-                            <p class="relative mt-3 text-sm leading-7 text-stone-500">{{ $c[2] }}</p>
+
+                            <div class="relative p-8 pt-4">
+                                <div class="absolute -top-10 -right-20 w-48 h-48 rounded-full opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"
+                                    style="background:radial-gradient(circle,rgba(251,191,36,.2),transparent 70%);">
+                                </div>
+                                <h3 class="relative text-xl font-bold">{{ $c[1] }}</h3>
+                                <p class="relative mt-3 text-sm leading-7 text-stone-500">{{ $c[2] }}</p>
+                            </div>
                             <div
                                 class="absolute bottom-0 left-0 h-[2px] w-0 bg-amber-400 transition-all duration-500 group-hover:w-full">
                             </div>
@@ -385,35 +449,57 @@
 
         <section id="about" class="relative py-28 border-t border-stone-800" style="background:#1c1917;">
             <div class="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
-                <div data-reveal>
+
+                <div data-reveal class="relative order-2 lg:order-1">
+                    <div class="relative rounded-3xl overflow-hidden border border-stone-700 aspect-[4/5] max-w-md bg-stone-900"
+                        style="box-shadow:0 30px 80px rgba(0,0,0,.5);">
+                        <img src="{{ $img['about'] }}" alt="Curated Fashion Hub wardrobe" loading="lazy"
+                            class="w-full h-full object-cover" onerror="this.style.display='none'">
+                        <div class="absolute inset-0"
+                            style="background:linear-gradient(to top,rgba(12,10,9,.55),transparent 50%);"></div>
+                    </div>
+                    <div class="animate-float absolute -bottom-8 -right-2 sm:right-8 w-44 aspect-square rounded-2xl overflow-hidden border-4 bg-stone-900"
+                        style="border-color:#1c1917;box-shadow:0 20px 50px rgba(0,0,0,.6);">
+                        <img src="{{ $img['about2'] }}" alt="Fashion Hub lifestyle" loading="lazy"
+                            class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    </div>
+                </div>
+
+                <div data-reveal class="order-1 lg:order-2">
                     <p class="text-xs font-bold uppercase tracking-[0.3em] text-amber-400">About Fashion Hub</p>
                     <h2 class="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight">Built around how you dress.
                     </h2>
                     <p class="mt-6 text-stone-400 leading-8">We curate pieces that balance quality, comfort and
                         character, so your wardrobe feels personal instead of generic.</p>
-                </div>
-                <div class="grid grid-cols-2 gap-5">
-                    @php $stats = [[100, '+', 'Products'], [24, '/7', 'Access'], [50, '+', 'Styles'], [100, '%', 'Quality focus']]; @endphp
-                    @foreach ($stats as $i => $s)
-                        <div data-reveal data-delay="{{ $i * 120 }}"
-                            class="rounded-2xl border border-stone-800 p-6 text-center hover:border-amber-400/40 hover:-translate-y-1 transition duration-300"
-                            style="background:rgba(12,10,9,.6);">
-                            <p class="text-4xl font-extrabold text-amber-400"><span
-                                    data-count="{{ $s[0] }}">0</span>{{ $s[1] }}</p>
-                            <p class="mt-2 text-xs text-stone-500">{{ $s[2] }}</p>
-                        </div>
-                    @endforeach
+
+                    <div class="mt-10 grid grid-cols-2 gap-5">
+                        @php $stats = [[100, '+', 'Products'], [24, '/7', 'Access'], [50, '+', 'Styles'], [100, '%', 'Quality focus']]; @endphp
+                        @foreach ($stats as $i => $s)
+                            <div data-reveal data-delay="{{ $i * 120 }}"
+                                class="rounded-2xl border border-stone-800 p-6 text-center hover:border-amber-400/40 hover:-translate-y-1 transition duration-300"
+                                style="background:rgba(12,10,9,.6);">
+                                <p class="text-4xl font-extrabold text-amber-400"><span
+                                        data-count="{{ $s[0] }}">0</span>{{ $s[1] }}</p>
+                                <p class="mt-2 text-xs text-stone-500">{{ $s[2] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="relative py-28 overflow-hidden" style="background:#0c0a09;">
+            <img src="{{ $img['cta'] }}" alt="" loading="lazy"
+                class="absolute inset-0 w-full h-full object-cover opacity-30" onerror="this.style.display='none'">
+            <div class="absolute inset-0 pointer-events-none"
+                style="background:linear-gradient(to bottom,#0c0a09,rgba(12,10,9,.55) 40%,rgba(12,10,9,.55) 60%,#0c0a09);">
+            </div>
             <div class="absolute inset-0 pointer-events-none"
                 style="background:radial-gradient(circle at center,rgba(251,191,36,.14),transparent 60%);"></div>
             <div data-reveal class="relative max-w-3xl mx-auto px-6 text-center">
                 <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Ready to find your <span
                         class="text-amber-400">look?</span></h2>
-                <p class="mt-5 text-stone-400">Create your free account and start exploring the collection today.</p>
+                <p class="mt-5 text-stone-300">Create your free account and start exploring the collection today.</p>
                 <a href="{{ route('register') }}"
                     class="relative overflow-hidden mt-9 inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-amber-400 text-stone-950 font-bold hover:bg-amber-300 hover:-translate-y-1 transition duration-300"
                     style="box-shadow:0 14px 40px rgba(251,191,36,.3);">
