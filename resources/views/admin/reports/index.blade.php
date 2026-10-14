@@ -418,8 +418,8 @@
                 </div>
 
                 @if ($productPerformance->hasPages())
-                    <div class="px-6 py-4 border-t border-stone-800/80">
-                        {{ $productPerformance->links() }}
+                    <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                        {{ $productPerformance->links('vendor.pagination.fashion-hub') }}
                     </div>
                 @endif
             </div>
@@ -472,8 +472,8 @@
                 </div>
 
                 @if ($lowStockProducts->hasPages())
-                    <div class="px-6 py-4 border-t border-stone-800/80">
-                        {{ $lowStockProducts->links() }}
+                    <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                        {{ $lowStockProducts->links('vendor.pagination.fashion-hub') }}
                     </div>
                 @endif
             </div>
@@ -537,8 +537,8 @@
                 </div>
 
                 @if ($topCustomers->hasPages())
-                    <div class="px-6 py-4 border-t border-stone-800/80">
-                        {{ $topCustomers->links() }}
+                    <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                        {{ $topCustomers->links('vendor.pagination.fashion-hub') }}
                     </div>
                 @endif
             </div>
@@ -593,8 +593,8 @@
                 </div>
 
                 @if ($customerOrders->hasPages())
-                    <div class="px-6 py-4 border-t border-stone-800/80">
-                        {{ $customerOrders->links() }}
+                    <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                        {{ $customerOrders->links('vendor.pagination.fashion-hub') }}
                     </div>
                 @endif
             </div>
@@ -739,8 +739,8 @@
                 </div>
 
                 @if ($recentOrders->hasPages())
-                    <div class="px-6 py-4 border-t border-stone-800/80">
-                        {{ $recentOrders->links() }}
+                    <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                        {{ $recentOrders->links('vendor.pagination.fashion-hub') }}
                     </div>
                 @endif
             </div>

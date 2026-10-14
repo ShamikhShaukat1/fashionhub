@@ -21,8 +21,8 @@ class DashboardController extends Controller
         $inactiveProducts = Product::where('status', false)->count();
         $lowStockProducts = Product::where('stock', '>', 0)->where('stock', '<=', 5)->count();
         $outOfStockProducts = Product::where('stock', '<=', 0)->count();
-        $products = Product::latest()->take(5)->get();
-        $categories = Category::latest()->take(5)->get();
+        $products = Product::latest()->take(3)->get();
+        $categories = Category::latest()->take(3)->get();
         $categoryData = Category::withCount('products')->orderByDesc('products_count')->get();
         $categoryNames = $categoryData->pluck('name')->values();
         $categoryProductCounts = $categoryData->pluck('products_count')->values();

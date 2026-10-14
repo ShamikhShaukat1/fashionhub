@@ -166,8 +166,8 @@
             </div>
 
             @if ($vendors->hasPages())
-                <div class="mt-6">
-                    {{ $vendors->links() }}
+                <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                    {{ $vendors->links('vendor.pagination.fashion-hub') }}
                 </div>
             @endif
 

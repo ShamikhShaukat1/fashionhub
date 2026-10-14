@@ -244,35 +244,5 @@
                 </div>
             </form>
         </section>
-
-        <section id="system" class="bg-stone-900/60 border border-stone-800/80 rounded-2xl p-6 mb-6">
-            <h2 class="text-xl font-bold text-white">
-                System Information
-            </h2>
-            <p class="text-sm text-stone-400 mt-1 mb-6">
-                Technical information about your application environment.
-            </p>
-
-            <div class="divide-y divide-stone-800">
-                @foreach ([
-            'Application' => 'Fashion Hub',
-            'Laravel Version' => $systemInfo['laravel'],
-            'PHP Version' => $systemInfo['php'],
-            'Environment' => $systemInfo['environment'],
-            'Debug Mode' => $systemInfo['debug'],
-        ] as $label => $value)
-                    <div
-                        class="flex flex-col sm:flex-row
-                            sm:items-center sm:justify-between gap-2 py-4">
-                        <span class="text-stone-400">{{ $label }}</span>
-                        <span class="text-white font-medium">{{ $value }}</span>
-                    </div>
-                @endforeach
-            </div>
-
-            <p class="text-xs text-stone-500 mt-4">
-                For production deployments, keep debug mode disabled.
-            </p>
-        </section>
     </div>
 @endsection

@@ -149,8 +149,8 @@
         </div>
 
         @if ($categories->hasPages())
-            <div class="mt-6">
-                {{ $categories->links() }}
+            <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                {{ $categories->links('vendor.pagination.fashion-hub') }}
             </div>
         @endif
 

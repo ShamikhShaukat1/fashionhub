@@ -255,8 +255,8 @@
                 </div>
 
                 @if ($orders->hasPages())
-                    <div class="px-6 py-5 border-t border-stone-800">
-                        {{ $orders->links() }}
+                    <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                        {{ $orders->links('vendor.pagination.fashion-hub') }}
                     </div>
                 @endif
             @else
