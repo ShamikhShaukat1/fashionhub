@@ -164,8 +164,8 @@
                 </div>
             </div>
 
-            <div class="text-stone-300">
-                {{ $notifications->links() }}
+            <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                {{ $notifications->links('vendor.pagination.fashion-hub') }}
             </div>
 
         </div>

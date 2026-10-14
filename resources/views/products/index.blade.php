@@ -208,8 +208,8 @@
             </div>
 
             @if (method_exists($products, 'links') && $products->hasPages())
-                <div class="p-4 border-t border-stone-800/60">
-                    {{ $products->links() }}
+                <div class="mt-6 px-6 pb-6 border-t border-stone-800/60 pt-5">
+                    {{ $products->links('vendor.pagination.fashion-hub') }}
                 </div>
             @endif
         </div>
